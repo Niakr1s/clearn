@@ -1,0 +1,1 @@
+# Excersises from the book "The C programming language: 2nd edition" by K&R
