@@ -11,3 +11,4 @@ add_subdirectory(src/scratchpad)
 
 add_subdirectory(src/c_kr/e_2_4)
 add_subdirectory(src/c_kr/e_2_5)
+add_subdirectory(src/c_kr/e_2_6)
