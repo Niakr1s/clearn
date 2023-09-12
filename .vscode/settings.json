@@ -3,6 +3,7 @@
         "float.h": "c",
         "limits.h": "c",
         "string.h": "c",
-        "assert.h": "c"
+        "assert.h": "c",
+        "e_2_8.h": "c"
     }
 }
