@@ -8,7 +8,7 @@ int main()
 {
     struct test_case
     {
-        char s1[10];
+        char s1[20];
         char expected_s2[100]; // expected s2
         int expected_res;      // expected result
     };
@@ -31,6 +31,10 @@ int main()
 
         {"a-b-c", "abc", -1},
         {"a-bb-c", "abbc", -1},
+        {"a-bb-c-e", "abbcde", -1},
+        {"a-bb-c-", "abbc-", -1},
+        {"a-bb-c-e--", "abbcde--", -1},
+        {"---a-bb-c-e--", "---abbcde--", -1},
     };
 
     int errors = 0;

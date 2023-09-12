@@ -6,10 +6,10 @@ int expand(const char *s1, char *s2)
 {
     enum state
     {
-        OUT, // before any ranges
-        BEGIN, // in range 'a-z' it's 'a'
+        OUT,         // before any ranges
+        BEGIN,       // in range 'a-z' it's 'a'
         END_PENDING, // in range 'a-z', set after '-'
-        END, // in range 'a-z' int's 'z'
+        END,         // in range 'a-z' int's 'z'
     };
 
     const char DELIM = '-';
@@ -31,10 +31,10 @@ int expand(const char *s1, char *s2)
                 *s2++ = DELIM;
                 break;
             case END_PENDING:
-                // add delim just in case that it's trailing characters
                 *s2++ = DELIM;
                 break;
             case END:
+                *s2++ = DELIM;
                 state = END_PENDING;
                 break;
             }
