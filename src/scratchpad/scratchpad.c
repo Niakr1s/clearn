@@ -3,13 +3,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
+void foo(void);
+
 void main()
 {
-    int i = -123;
-    while (i != 0)
-    {
-        int rem = i % 10;
-        i /= 10;
-        printf("%%%d, /%d\n", rem, i);
-    }
+    foo();
 }
