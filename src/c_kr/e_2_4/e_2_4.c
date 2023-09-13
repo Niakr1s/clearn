@@ -2,15 +2,14 @@
 
 #include "e_2_4.h"
 
-// removes each character in str that matches any character in substr
-void squeeze(char *str, char *substr)
+void squeeze(char *str, const char *substr)
 {
-    char buf[strlen(str)];
-    int bi = 0;
-    for (int i = 0; str[i] != '\0'; i++)
+    char buf[strlen(str) + 1];
+    int bi = 0, i = 0;
+    for (i = 0; str[i] != '\0'; i++)
     {
-        int found = 0;
-        for (int j = 0; substr[j] != '\0'; j++)
+        int found = 0, j = 0;
+        for (j = 0; substr[j] != '\0'; j++)
         {
             if (str[i] == substr[j])
             {

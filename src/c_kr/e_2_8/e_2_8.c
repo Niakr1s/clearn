@@ -5,7 +5,8 @@
 unsigned rightrot(unsigned x, int n)
 {
     int bits = 0; // number of bits in x
-    for (unsigned xx = x; xx != 0; bits++)
+    unsigned xx;
+    for (xx = x; xx != 0; bits++)
         xx >>= 1;
 
     if (bits != 0)

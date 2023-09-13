@@ -27,8 +27,8 @@ int main()
         {"\th\nel\tlo\n", "\\th\\nel\\tlo\\n"},
     };
 
-    int errors = 0;
-    for (int i = 0; i < sizeof(cases) / sizeof(cases[0]); i++)
+    int errors, i = 0;
+    for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++)
     {
         struct test_case *test = &cases[i];
 

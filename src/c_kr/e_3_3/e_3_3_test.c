@@ -41,8 +41,8 @@ int main()
 
 #define GOT_S2_SZ 100
     char got_s2[GOT_S2_SZ];
-
-    for (int i = 0; i < sizeof(cases) / sizeof(cases[0]);
+    int i;
+    for (i = 0; i < sizeof(cases) / sizeof(cases[0]);
          i++, memset(got_s2, '\0', GOT_S2_SZ))
     {
         struct test_case *test = &cases[i];

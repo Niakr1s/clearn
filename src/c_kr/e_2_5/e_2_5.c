@@ -7,7 +7,8 @@ int strfind(char *s, char *substr)
     if (s[0] == '\0' && substr[0] == '\0')
         return 0;
 
-    for (int i = 0; s[i] != '\0'; i++)
+    int i;
+    for (i = 0; s[i] != '\0'; i++)
     {
         if (memcmp(s + i, substr, strlen(substr)) == 0)
         {

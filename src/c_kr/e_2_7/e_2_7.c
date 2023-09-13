@@ -5,7 +5,8 @@
 unsigned invert(unsigned x, int p, int n)
 {
     int bits = 0; // number of bits in x
-    for (unsigned xx = x; xx != 0; bits++)
+    unsigned xx;
+    for (xx = x; xx != 0; bits++)
         xx >>= 1;
 
     unsigned mask = ~(~0 << n) << (bits - p - n); // 00001110000

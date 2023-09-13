@@ -5,7 +5,8 @@
 unsigned setbits(unsigned x, int p, int n, unsigned y)
 {
     int bits = 0; // number of bits in x
-    for (unsigned xx = x; xx != 0; bits++)
+    unsigned xx;
+    for (xx = x; xx != 0; bits++)
         xx >>= 1;
 
     unsigned clear_mask = ~(~(~0 << n) << (bits - p - n));

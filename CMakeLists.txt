@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(clearn)
 
 # Set the C++ standard
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 90)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
 enable_testing()

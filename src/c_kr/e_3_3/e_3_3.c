@@ -56,7 +56,8 @@ int expand(const char *s1, char *s2)
                 break;
             case END_PENDING:
                 s2 = beg;
-                for (int ch = *beg; ch <= s1[i]; ch++)
+                int ch;
+                for (ch = *beg; ch <= s1[i]; ch++)
                     *s2++ = ch;
                 beg = s2 - 1;
                 state = END;
