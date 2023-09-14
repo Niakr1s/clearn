@@ -8,6 +8,7 @@
         "e_3_3.h": "c",
         "e_2_4.h": "c",
         "stdlib.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "e_5_3.h": "c"
     }
 }
