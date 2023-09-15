@@ -21,3 +21,5 @@ add_subdirectory(src/c_kr/e_3_4)
 add_subdirectory(src/c_kr/e_3_6)
 add_subdirectory(src/c_kr/e_5_3)
 add_subdirectory(src/c_kr/e_5_4)
+
+add_subdirectory(src/c_kr/dcl)
