@@ -49,14 +49,12 @@ struct token
 
 struct name_data
 {
-    const char *p;
-    int len;
+    char *s;
 };
 
 struct brackets_data
 {
-    const char *p;
-    int len;
+    char *s;
 };
 
 struct array_data
@@ -66,16 +64,20 @@ struct array_data
 
 void free_token(struct token *token)
 {
+    if (!token)
+        return;
     switch (token->type)
     {
     case NAME:
         struct name_data *nd = (struct name_data *)token->data;
+        free(nd->s);
         free(nd);
         break;
     case POINTER:
         break;
     case BRACKETS:
         struct brackets_data *bd = (struct brackets_data *)token->data;
+        free(bd->s);
         free(bd);
         break;
     case ARRAY:
@@ -88,27 +90,22 @@ void free_token(struct token *token)
 
 void print_token(const struct token *token)
 {
-
-    char buf[256];
-
     switch (token->type)
     {
     case NAME:
         struct name_data *nd = (struct name_data *)token->data;
-        strncpy(buf, nd->p, nd->len);
-        printf("NAME: '%s'", buf);
+        printf("%s", nd->s);
         break;
     case POINTER:
-        printf("POINTER");
+        printf("*");
         break;
     case BRACKETS:
         struct brackets_data *bd = (struct brackets_data *)token->data;
-        strncpy(buf, bd->p, bd->len);
-        printf("BRACKETS: '%s'", buf);
+        printf("(%s)", bd->s);
         break;
     case ARRAY:
         struct array_data *ad = (struct array_data *)token->data;
-        printf("ARRAY: [%d]", ad->sz);
+        printf("[%d]", ad->sz);
         break;
     }
 }
@@ -138,9 +135,12 @@ struct token *nexttoken(struct token_getter *getter)
     else if ((len = name_len(getter->s)))
     {
         struct name_data *data = (struct name_data *)malloc(sizeof(struct name_data));
-        data->p = getter->s;
-        data->len = len;
+        data->s = (char *)malloc(len + 1);
+        strncpy(data->s, getter->s, len);
+        data->s[len] = 0;
+
         getter->s += len;
+
         token = (struct token *)malloc(sizeof(struct token));
         token->type = NAME;
         token->data = (void *)data;
@@ -148,9 +148,12 @@ struct token *nexttoken(struct token_getter *getter)
     else if ((len = brackets_len(getter->s, '(', ')')))
     {
         struct brackets_data *data = (struct brackets_data *)malloc(sizeof(struct brackets_data));
-        data->p = getter->s;
-        data->len = len;
+        data->s = (char *)malloc(len - 1);
+        strncpy(data->s, getter->s + 1, len - 2);
+        data->s[len - 2] = 0;
+
         getter->s += len;
+
         token = (struct token *)malloc(sizeof(struct token));
         token->type = BRACKETS;
         token->data = (void *)data;
@@ -158,7 +161,7 @@ struct token *nexttoken(struct token_getter *getter)
     else if ((len = brackets_len(getter->s, '[', ']')))
     {
         struct array_data *data = (struct array_data *)malloc(sizeof(struct array_data));
-        if (sscanf(getter->s, "[%d]", &data->sz) == 0)
+        if (!sscanf(getter->s, "[%d]", &data->sz))
         {
             data->sz = 0;
         }
@@ -176,8 +179,17 @@ void dcl_parse(const char *s)
     struct token *out;
     for (out = nexttoken(&getter); out; out = nexttoken(&getter))
     {
-        print_token(out);
-        printf("\n");
-        free_token(out);
+        if (out->type == BRACKETS)
+        {
+            printf("(");
+            dcl_parse(((struct brackets_data *)out->data)->s);
+            printf(") ");
+        }
+        else
+        {
+            print_token(out);
+            printf(" ");
+        }
     }
+    free_token(out);
 }

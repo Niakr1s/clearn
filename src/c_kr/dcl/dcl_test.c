@@ -31,6 +31,7 @@ int main()
     //     // assert(!fail);
     // }
     const char *s = "  char (   *(*x[3])())   [5]";
+    // const char *s = "()";
     printf("%s -> \n", s);
     dcl_parse(s);
     return errors;
