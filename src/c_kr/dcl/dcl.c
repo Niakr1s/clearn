@@ -39,7 +39,6 @@ struct token
 {
     enum
     {
-        NONE,
         NAME,
         POINTER,
         BRACKETS,
@@ -94,9 +93,6 @@ void print_token(const struct token *token)
 
     switch (token->type)
     {
-    case NONE:
-        printf("NONE");
-        break;
     case NAME:
         struct name_data *nd = (struct name_data *)token->data;
         strncpy(buf, nd->p, nd->len);
@@ -127,17 +123,17 @@ struct token_getter new_token_getter(const char *s)
     return (struct token_getter){s};
 }
 
-struct token nexttoken(struct token_getter *getter)
+struct token *nexttoken(struct token_getter *getter)
 {
     skip_spaces(&getter->s);
 
+    struct token *token = NULL;
     int len;
-    if (*getter->s == '\0')
-        return (struct token){NONE, NULL};
-    else if (*getter->s == '*')
+    if (*getter->s == '*')
     {
         getter->s++;
-        return (struct token){POINTER, NULL};
+        token = (struct token *)malloc(sizeof(struct token));
+        token->type = POINTER;
     }
     else if ((len = name_len(getter->s)))
     {
@@ -145,7 +141,9 @@ struct token nexttoken(struct token_getter *getter)
         data->p = getter->s;
         data->len = len;
         getter->s += len;
-        return (struct token){NAME, (void *)data};
+        token = (struct token *)malloc(sizeof(struct token));
+        token->type = NAME;
+        token->data = (void *)data;
     }
     else if ((len = brackets_len(getter->s, '(', ')')))
     {
@@ -153,7 +151,9 @@ struct token nexttoken(struct token_getter *getter)
         data->p = getter->s;
         data->len = len;
         getter->s += len;
-        return (struct token){BRACKETS, (void *)data};
+        token = (struct token *)malloc(sizeof(struct token));
+        token->type = BRACKETS;
+        token->data = (void *)data;
     }
     else if ((len = brackets_len(getter->s, '[', ']')))
     {
@@ -163,21 +163,21 @@ struct token nexttoken(struct token_getter *getter)
             data->sz = 0;
         }
         getter->s += len;
-        return (struct token){ARRAY, (void *)data};
+        token = (struct token *)malloc(sizeof(struct token));
+        token->type = ARRAY;
+        token->data = (void *)data;
     }
-    else
-    {
-        return (struct token){NONE, NULL};
-    }
+    return token;
 }
 
 void dcl_parse(const char *s)
 {
     struct token_getter getter = new_token_getter(s);
-    struct token out;
-    for (out = nexttoken(&getter); out.type != NONE; out = nexttoken(&getter))
+    struct token *out;
+    for (out = nexttoken(&getter); out; out = nexttoken(&getter))
     {
-        print_token(&out);
+        print_token(out);
         printf("\n");
+        free_token(out);
     }
 }
